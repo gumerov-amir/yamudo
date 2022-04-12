@@ -121,11 +121,11 @@ def download(track: yandex_music.Track) -> None:
         track = track.fetch_track()
     track_name = get_track_name(track)
     sub_context = track_name
-    file_name = track_name + ".mp3"
+    file_name = clean_file_name(track_name + ".mp3")
     if file_name in downloaded_files:
         return
     url = track.get_download_info(get_direct_links=True)[0].direct_link
-    download_file(url, os.path.join(target_dir, clean_file_name(file_name)))
+    download_file(url, os.path.join(target_dir, file_name))
     downloaded_files.append(file_name)
     time.sleep(5)
 
