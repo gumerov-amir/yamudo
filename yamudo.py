@@ -68,7 +68,7 @@ def update_progress():
     elif tracks_count == 1:
         sys.stdout.write(f"Downloading track \"{sub_context if len(sub_context) <= 79 else sub_context[0:75] + '...'}\" {downloaded_size} of {total_size} MB\r")
     else:
-        sys.stdout.write(f"Downloading {context if len(context) <= 38 else context[0:35] + '...'} ({track_index} of {tracks_count}, {sub_context if len(sub_context) <= 38 else sub_context[0:35] + '...'}), {downloaded_size} of {total_size} MB\r")
+        sys.stdout.write(f"Downloading {context if len(context) <= 36 else context[0:32] + '...'} ({track_index} of {tracks_count}, {sub_context if len(sub_context) <= 35 else sub_context[0:32] + '...'}), {downloaded_size} of {total_size} MB\r")
     sys.stdout.flush()
 
 def get_track_name(track: yandex_music.Track) -> str:
@@ -135,7 +135,6 @@ def download(track: yandex_music.Track) -> None:
     update_progress()
     time.sleep(5)
     waiting = False
-    update_progress()
 
 def main():
     global context, track_index, tracks_count
