@@ -59,12 +59,16 @@ tracks_count = 0
 downloaded_size = 0
 total_size = 0
 
+waiting = False
+
 
 def update_progress():
-    if tracks_count == 1:
-        sys.stdout.write(f"Downloading track \"{sub_context}\" {downloaded_size} of {total_size} MB\r")
+    if waiting:
+        sys.stdout.write(f"Waiting 5 seconds{' '*100}\r")
+    elif tracks_count == 1:
+        sys.stdout.write(f"Downloading track \"{sub_context if len(sub_context) <= 79 else sub_context[0:75] + '...'}\" {downloaded_size} of {total_size} MB\r")
     else:
-        sys.stdout.write(f"Downloading {context} ({track_index} of {tracks_count}, {sub_context}), {downloaded_size} of {total_size} MB\r")
+        sys.stdout.write(f"Downloading {context if len(context) <= 38 else context[0:35] + '...'} ({track_index} of {tracks_count}, {sub_context if len(sub_context) <= 38 else sub_context[0:35] + '...'}), {downloaded_size} of {total_size} MB\r")
     sys.stdout.flush()
 
 def get_track_name(track: yandex_music.Track) -> str:
@@ -116,7 +120,7 @@ def download_file(url: str, file_path: str) -> None:
             update_progress()
 
 def download(track: yandex_music.Track) -> None:
-    global sub_context
+    global sub_context, waiting
     if isinstance(track, yandex_music.TrackShort):
         track = track.fetch_track()
     track_name = get_track_name(track)
@@ -127,8 +131,11 @@ def download(track: yandex_music.Track) -> None:
     url = track.get_download_info(get_direct_links=True)[0].direct_link
     download_file(url, os.path.join(target_dir, file_name))
     downloaded_files.append(file_name)
+    waiting = True
+    update_progress()
     time.sleep(5)
-
+    waiting = False
+    update_progress()
 
 def main():
     global context, track_index, tracks_count
