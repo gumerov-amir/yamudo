@@ -49,7 +49,11 @@ else:
     if not os.path.isfile(cfg["links_file"]):
         sys.exit("Invalid links file path")
     with open(cfg["links_file"], "r", encoding="utf-8") as f:
-        targets = [target[0:-1] for target in f.readlines()]
+        targets = []
+        for target in f.readlines():
+            stripted_target = target.strip()
+            if stripted_target:
+                targets.append(stripted_target)
 
 context = ""
 sub_context = ""
