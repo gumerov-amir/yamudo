@@ -52,7 +52,7 @@ else:
         targets = []
         for target in f.readlines():
             stripted_target = target.strip()
-            if stripted_target:
+            if stripted_target and stripted_target[0] != "#":
                 targets.append(stripted_target)
 
 context = ""
@@ -139,6 +139,7 @@ def download(track: yandex_music.Track) -> None:
     update_progress()
     time.sleep(5)
     waiting = False
+    update_progress()
 
 def main():
     global context, track_index, tracks_count
