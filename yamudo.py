@@ -152,7 +152,10 @@ def main():
         update_progress()
         for track in tracks:
             track_index += 1
-            download(track)
+            try:
+                download(track)
+            except Exception as e:
+                print("Error:", e)
     print("")
     print("Done")
 
